@@ -1,0 +1,12 @@
+.home-body-container {
+    height: 88vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.welcome-message {
+    font-size: 24px;
+    color: blueviolet;
+}
