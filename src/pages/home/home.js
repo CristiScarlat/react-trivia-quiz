@@ -1,39 +1,26 @@
 import React, { useContext, useState } from 'react';
+import { useHistory } from "react-router-dom";
 import UI_TEXT from '../../constants';
-import { Button } from 'react-bootstrap';
-import Header from '../../modules/header/header';
-import Footer from '../../modules/footer/footer';
-import TextInput from '../../components/input/textInput';
 import './home.css'
 import { StoreContext } from '../../context/store';
+import QuizForm from '../../modules/quizParamsForm/QuizParamsForm';
 
 function Home() {
-    const [name, setName] = useState('')
-    const {globalState, dispatch} = useContext(StoreContext)
-    
-    const handleInputName = (e) => {
-        setName(e.target.value)
-    }
 
-    const handleStart = () => {
-        dispatch({type: 'SET_NAME', name: name})
-        dispatch({type: 'HANDLE_MODAL', modal:{
-            show: true,
-            title: 'Hi!!!',
-            body:  `Hi ${name}, do you want to continue?`
-          }})
+    const { globalState, dispatch } = useContext(StoreContext)
+    const history = useHistory()
+
+    const handleStartQuiz = (quizParams) => {
+        dispatch({ type: 'SET_NAME', name: quizParams.name })
+        dispatch({ type: 'SET_QUIZ_PARAMS', quizParams})
+        history.push('/quiz')
     }
 
     return (
-        <>
-        <Header />
-        <div className="home-body-container">
+        <div className="body-container">
             <div className="welcome-message m-4">{UI_TEXT.welcomeMessage}</div>
-            <TextInput className="m-4" type="text" value={name} placeholder="Input your name" onChange={handleInputName}/>
-            <Button varinat="primary" onClick={handleStart} disabled={name === ''}>Start</Button>
+            <QuizForm quizCategories={globalState.categories} onSubmit={handleStartQuiz}/>
         </div>
-        <Footer />
-        </>
     )
 }
 

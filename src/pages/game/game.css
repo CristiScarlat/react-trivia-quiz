@@ -1,0 +1,15 @@
+.quiz-card {
+    text-align: center;
+    width: 90%;
+    padding: 1rem;
+    border: 1px solid blue;
+    border-radius: 10px;
+}
+
+.quiz-info {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    margin: 2rem;
+    color: grey;
+}
