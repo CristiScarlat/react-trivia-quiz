@@ -180,7 +180,8 @@ function Game() {
                         <li style={{color: aq.user_answer.correct ? 'green' : 'red'}}>
                             <p dangerouslySetInnerHTML={{ __html: aq.question }}></p>
                             <p>Your answer: {aq.user_answer.answer}</p>
-                            <p>{aq.user_answer.correct ? 'correct' : 'wrong'}</p>
+                            <p style={{color: 'green'}}>CorrectAnswer: {aq.correct_answer}</p>
+                            <p>Your answer is {aq.user_answer.correct ? 'correct' : 'wrong'}</p>
                         </li>
                         )
                     })}
