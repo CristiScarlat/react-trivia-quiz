@@ -49,6 +49,11 @@
     font-weight: 600;
 }
 
+.results-status-container{
+    height: 10rem;
+    overflow: auto;
+}
+
 @media only screen and (max-width: 600px){
     .quiz-card {
         border: none;

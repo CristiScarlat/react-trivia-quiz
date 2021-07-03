@@ -90,7 +90,7 @@ function Game() {
         setShowSubmitModal(false)
         if (eventType === 'yes') {
             setShowResultsModal(true)
-
+            console.log({correct: answeredQuestions.current})
         }
     }
 
@@ -173,6 +173,19 @@ function Game() {
             <p>{`You answered to ${answeredQuestions.current?.length} questions out of ${questionList.length}.`}</p>
             <p>{`You answered correctly to ${correctAnswers.current?.length} questions.`}</p>
             <p>{`Your score is ${correctAnswers.current?.length}`}</p>
+            <div className="results-status-container">
+                <ul>
+                    {answeredQuestions.current.map(aq => {
+                        return(
+                        <li style={{color: aq.user_answer.correct ? 'green' : 'red'}}>
+                            <p dangerouslySetInnerHTML={{ __html: aq.question }}></p>
+                            <p>Your answer: {aq.user_answer.answer}</p>
+                            <p>{aq.user_answer.correct ? 'correct' : 'wrong'}</p>
+                        </li>
+                        )
+                    })}
+                </ul>
+            </div>
         </CustomModal>
     </div>)
 }
