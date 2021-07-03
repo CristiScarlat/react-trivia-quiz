@@ -7,7 +7,7 @@ function Header() {
   const {globalState, dispatch} = useContext(StoreContext)
 
   return (
-    <Navbar bg="dark" variant="dark" fixed="top">
+    <Navbar bg="dark" variant="dark" fixed="top" expand="lg" className="flex-nowrap">
       <Navbar.Brand href="/">{UI_TEXT.headerTitle}</Navbar.Brand>
       <Nav className="mr-auto">
         <Nav.Link href="https://opentdb.com/api_config.php">{UI_TEXT.openTriviaApiMessage}</Nav.Link>

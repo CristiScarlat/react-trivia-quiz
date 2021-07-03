@@ -48,3 +48,18 @@
     color: red;
     font-weight: 600;
 }
+
+@media only screen and (max-width: 600px){
+    .quiz-card {
+        border: none;
+        min-height: unset;
+    }
+
+    .high-score-message {
+        flex-direction: column-reverse;
+    }
+
+    .quiz-info {
+        display: none;
+    }
+}

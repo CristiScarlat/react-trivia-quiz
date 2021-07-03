@@ -11,3 +11,11 @@
     color: blueviolet;
     text-align: center;
 }
+
+@media only screen and (max-width: 600px){
+    .body-container {
+        margin-top: 10rem;
+        margin-bottom: 10rem;
+        padding: 1rem;
+    }
+}

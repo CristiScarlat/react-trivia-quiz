@@ -113,7 +113,7 @@ function Game() {
         })
     }
 
-    return (<div className="body-container mt-5">
+    return (<div className="body-container">
         {questionList?.length > 0 ? <>
             <div className="high-score-message">
                 {!showResultsModal && <CountdownTimer deadline={new Date(new Date().getTime() + 15 * 60000)} onFinish={() => handleModalEvent('yes')} />}
@@ -124,7 +124,12 @@ function Game() {
                 <div className="answer-options-container">
                     <ButtonGroup vertical>
                         {[questionList[qIndex].correct_answer, ...questionList[qIndex].incorrect_answers].map((ia, index) => (
-                            <Button key={index + "-" + ia} className="m-2" variant="outline-primary" onClick={() => handleAnswer(ia)} dangerouslySetInnerHTML={{ __html: ia }}></Button>
+                            <Button key={index + "-" + ia} 
+                            className="m-2" 
+                            variant={questionList[qIndex].user_answer?.answer === ia ? "outline-success" : "outline-primary"}
+                            onClick={() => handleAnswer(ia)} 
+                            dangerouslySetInnerHTML={{ __html: ia }}>
+                            </Button>
                         ))}
                     </ButtonGroup>
                 </div>
