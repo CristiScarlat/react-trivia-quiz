@@ -116,7 +116,7 @@ function Game() {
     return (<div className="body-container mt-5">
         {questionList?.length > 0 ? <>
             <div className="high-score-message">
-                <CountdownTimer onFinish={() => handleModalEvent('yes')} />
+                <CountdownTimer deadline={new Date(new Date().getTime() + 15 * 60000)} onFinish={() => handleModalEvent('yes')} />
                 {getHighScore()}
             </div>
             <div className="quiz-card">
