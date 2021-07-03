@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import UI_TEXT from '../../constants';
 import './home.css'
@@ -10,11 +10,17 @@ function Home() {
     const { globalState, dispatch } = useContext(StoreContext)
     const history = useHistory()
 
+    useEffect(() => {
+        dispatch({type: 'SET_NAME', name: ''})
+    }, [])
+
     const handleStartQuiz = (quizParams) => {
         dispatch({ type: 'SET_NAME', name: quizParams.name })
         dispatch({ type: 'SET_QUIZ_PARAMS', quizParams})
         history.push('/quiz')
     }
+
+    console.log("home", globalState.name)
 
     return (
         <div className="body-container">

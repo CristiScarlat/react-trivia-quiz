@@ -1,6 +1,7 @@
 .quiz-card {
     text-align: center;
     width: 90%;
+    min-height: 65%;
     padding: 1rem;
     border: 1px solid blue;
     border-radius: 10px;
@@ -12,4 +13,27 @@
     width: 90%;
     margin: 2rem;
     color: grey;
+}
+
+.submit-container {
+    height: 3rem;
+    margin: 0.5rem;
+}
+
+.answer-options-container {
+    min-height: 55%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.high-score-message {
+    display: flex;
+    width: 90%;
+    color: green;
+    font-weight: 600;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    align-items: center;
+    text-align: center;
 }

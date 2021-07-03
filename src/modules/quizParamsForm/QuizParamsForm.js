@@ -1,8 +1,8 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useState, useRef} from 'react';
 import { Form, Button } from 'react-bootstrap';
 
 function QuizForm({ quizCategories, onSubmit }) {
-    const nameRef = useRef('')
+    const [userName, setUserName] = useState('')
     const amountRef = useRef('')
     const difficultyRef = useRef('')
     const typeRef = useRef('')
@@ -12,7 +12,7 @@ function QuizForm({ quizCategories, onSubmit }) {
         e.preventDefault()
         e.stopPropagation();
         const formObj = {
-            name: nameRef.current.value,
+            name: userName,
             amount: amountRef.current.value,
             difficulty: difficultyRef.current.value,
             type: typeRef.current.value,
@@ -21,13 +21,15 @@ function QuizForm({ quizCategories, onSubmit }) {
         onSubmit(formObj)
     }
 
-
+    const handleNameInput = (e) => {
+        setUserName(e.target.value)
+    }
 
     return (
         <Form className="quiz-form" onSubmit={handleSubmit}>
             <Form.Group controlId="formBasicName">
                 <Form.Label>Your Name</Form.Label>
-                <Form.Control type="text" placeholder="Enter your name" ref={nameRef}/>
+                <Form.Control type="text" placeholder="Enter your name" onChange={handleNameInput}/>
             </Form.Group>
 
             <Form.Group controlId="formBasicNoQuestions">
@@ -86,7 +88,7 @@ function QuizForm({ quizCategories, onSubmit }) {
                 </Form.Control>
             </Form.Group>
 
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" disabled={userName === ""}>
                 Start Quiz
             </Button>
         </Form>

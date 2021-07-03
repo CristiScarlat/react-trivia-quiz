@@ -3,7 +3,7 @@ import {Modal, Button} from 'react-bootstrap'
 
 function CustomModal({children, show, onHide, title="", showFooter=true, handleCancelButton, handleYesButton, cancelButtonLabel='no', yesButtonLabel='yes'}) {
     return (
-        <Modal show={show} onHide={onHide}>
+        <Modal show={show} onHide={onHide} centered>
             <Modal.Header closeButton>
                 <Modal.Title>{title}</Modal.Title>
             </Modal.Header>
