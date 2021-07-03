@@ -1,9 +1,10 @@
 import React, { useContext, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import UI_TEXT from '../../constants';
-import './home.css'
+import { resetToken } from '../../services/api'
 import { StoreContext } from '../../context/store';
 import QuizForm from '../../modules/quizParamsForm/QuizParamsForm';
+import './home.css';
 
 function Home() {
 
@@ -12,6 +13,13 @@ function Home() {
 
     useEffect(() => {
         dispatch({type: 'SET_NAME', name: ''})
+        async function getNewToken() {
+            const resNewToken = await resetToken()
+            if (resNewToken.data.response_code === 0) {
+                localStorage.setItem('token', resNewToken.data.token);
+            }
+        }
+        getNewToken()
     }, [])
 
     const handleStartQuiz = (quizParams) => {

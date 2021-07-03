@@ -1,9 +1,12 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { StoreContext } from '../../context/store';
-import { getQuestions, resetToken } from '../../services/api';
+import { getQuestions } from '../../services/api';
 import { ButtonGroup, Button, Dropdown, Spinner } from 'react-bootstrap';
 import CustomModal from '../../components/modal/modal';
 import CountdownTimer from '../../components/countdownTimer/countdownTimer';
+import { useHistory } from "react-router-dom";
+import UI_TEXT from '../../constants';
+import ErrorDisplay from '../../modules/error/error';
 import './game.css'
 
 function Game() {
@@ -11,15 +14,14 @@ function Game() {
     const [qIndex, setqIndex] = useState(0)
     const [showSubmitModal, setShowSubmitModal] = useState(false)
     const [showResultsModal, setShowResultsModal] = useState(false)
-    const [tickTime, setTickTime] = useState(new Date())
+    const [error, setError] = useState(null)
 
     const correctAnswers = useRef([])
     const answeredQuestions = useRef([])
     const timerId = useRef()
 
     const { globalState, dispatch } = useContext(StoreContext)
-
-    console.log("game", globalState)
+    const history = useHistory()
 
     const getCategoryId = (categoryName) => {
         const quizCategories = globalState.categories
@@ -35,16 +37,9 @@ function Game() {
         params.category = getCategoryId(globalState.quizParams.category)
 
         const res = await getQuestions(params)
+        console.log(res.data)
         if (res.data.response_code === 0 && res.data?.results) setQuestionsList([...res.data.results])
-        if (res.data.response_code === 4) {
-            const resNewToken = await resetToken()
-            if (resNewToken.data.response_code === 0) {
-                localStorage.removeItem('token')
-                localStorage.setItem('token', resNewToken.data.token);
-                fetchQuizData();
-            }
-        }
-
+        else setError(res.data.response_code)
     }
 
     useEffect(() => {
@@ -80,8 +75,12 @@ function Game() {
     }
 
     const handleSubmit = () => {
-
-
+        answeredQuestions.current = questionList.filter(qObj => qObj.user_answer)
+        correctAnswers.current = answeredQuestions.current.filter(qObj => qObj.user_answer.correct)
+        const name = localStorage.getItem('name') || 'quest'
+        const score = JSON.parse(localStorage.getItem('score')) || {}
+        score[name] = correctAnswers.current.length
+        localStorage.setItem('score', JSON.stringify({ ...score }))
         setShowSubmitModal(true)
 
     }
@@ -90,12 +89,6 @@ function Game() {
         console.log(eventType)
         setShowSubmitModal(false)
         if (eventType === 'yes') {
-            answeredQuestions.current = questionList.filter(qObj => qObj.user_answer)
-            correctAnswers.current = answeredQuestions.current.filter(qObj => qObj.user_answer.correct)
-            const name = localStorage.getItem('name') || 'quest'
-            const score = JSON.parse(localStorage.getItem('score')) || {}
-            score[name] = correctAnswers.current.length
-            localStorage.setItem('score', JSON.stringify({ ...score }))
             setShowResultsModal(true)
 
         }
@@ -113,10 +106,17 @@ function Game() {
 
     }
 
+    const onCloseResultModal = () => {
+        setShowResultsModal(prevState => {
+            if(prevState)history.push('/')
+            return false
+        })
+    }
+
     return (<div className="body-container mt-5">
         {questionList?.length > 0 ? <>
             <div className="high-score-message">
-                <CountdownTimer deadline={new Date(new Date().getTime() + 15 * 60000)} onFinish={() => handleModalEvent('yes')} />
+                {!showResultsModal && <CountdownTimer deadline={new Date(new Date().getTime() + 15 * 60000)} onFinish={() => handleModalEvent('yes')} />}
                 {getHighScore()}
             </div>
             <div className="quiz-card">
@@ -149,7 +149,8 @@ function Game() {
             </div>
             <div className="quiz-info"><p>Category: <span>{questionList[qIndex].category}</span></p><p>Difficulty: <span>{questionList[qIndex].difficulty}</span></p></div>
         </> :
-            <Spinner animation="border" role="status">
+            error ? <ErrorDisplay className="error-display-message" errorMsg={UI_TEXT.openApiErrors[error]}/> :
+             <Spinner animation="border" role="status">
                 <span className="sr-only">Loading...</span>
             </Spinner>}
         <CustomModal show={showSubmitModal}
@@ -162,7 +163,7 @@ function Game() {
         <CustomModal show={showResultsModal}
             title="Your score is:"
             showFooter={false}
-            onHide={() => setShowResultsModal(false)}
+            onHide={onCloseResultModal}
         >
             <p>{`You answered to ${answeredQuestions.current?.length} questions out of ${questionList.length}.`}</p>
             <p>{`You answered correctly to ${correctAnswers.current?.length} questions.`}</p>

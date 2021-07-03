@@ -37,3 +37,14 @@
     align-items: center;
     text-align: center;
 }
+
+.dropdown-menu{
+    max-height: 10rem;
+    overflow: auto;
+}
+
+.error-display-message {
+    padding: 3rem;
+    color: red;
+    font-weight: 600;
+}
